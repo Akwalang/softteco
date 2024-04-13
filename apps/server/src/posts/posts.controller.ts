@@ -3,10 +3,11 @@ import { Controller, Get, Post, Patch, Delete, Param, Body } from '@nestjs/commo
 import { PostsService } from './posts.service';
 
 import {
+  PostListItemResponseDto,
+  PostGetResponseDto,
   PostCreateRequestDto,
   PostCreateResponseDto,
   PostDeleteResponseDto,
-  PostListItemResponseDto,
   PostParamsDto,
   PostUpdateRequestDto,
   PostUpdateResponseDto,
@@ -24,7 +25,7 @@ export class PostsController {
   }
 
   @Get(':postId')
-  getPost(@Param() { postId }: PostParamsDto): Promise<PostCreateResponseDto> {
+  getPost(@Param() { postId }: PostParamsDto): Promise<PostGetResponseDto> {
     return this.postsService.getPost(postId);
   }
 

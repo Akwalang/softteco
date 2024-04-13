@@ -1,10 +1,11 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { EntityManager } from 'typeorm';
 
 import { PostEntity } from './entities/post.entity';
 
 import {
   PostListItemResponseDto,
+  PostGetResponseDto,
   PostCreateRequestDto,
   PostCreateResponseDto,
   PostUpdateRequestDto,
@@ -18,8 +19,8 @@ import { AuthUser } from '../auth';
 export class PostsService {
   constructor(private entityManager: EntityManager) {}
 
-  getAllPosts(): Promise<PostListItemResponseDto[]> {
-    return this.entityManager.find(PostEntity, {
+  async getAllPosts(): Promise<PostListItemResponseDto[]> {
+    const posts = await this.entityManager.find(PostEntity, {
       select: {
         id: true,
         title: true,
@@ -29,21 +30,37 @@ export class PostsService {
       },
       relations: ['author'],
     });
+
+    return posts as PostListItemResponseDto[];
   }
 
-  getPost(postId: string): Promise<PostCreateResponseDto> {
-    return this.entityManager.findOne(PostEntity, {
+  async getPost(postId: string): Promise<PostGetResponseDto> {
+    const post = await this.entityManager.findOne(PostEntity, {
       select: {
         id: true,
         title: true,
         alias: true,
         content: true,
         createdAt: true,
+        updatedAt: true,
         author: { id: true, name: true },
+        comments: {
+          id: true,
+          message: true,
+          createdAt: true,
+          updatedAt: true,
+          author: { id: true, name: true },
+        },
       },
       where: { id: postId },
-      relations: ['author'],
+      relations: ['author', 'comments', 'comments.author'],
     });
+
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+
+    return post as PostGetResponseDto;
   }
 
   async createPost(
@@ -77,9 +94,9 @@ export class PostsService {
       throw new BadRequestException('Post not found');
     }
 
-    await this.entityManager.update(PostEntity, { id: postId }, data);
+    await this.entityManager.update(PostEntity, { id: postId }, { ...data });
 
-    return { ...post, ...data };
+    return { ...post, ...data } as PostUpdateResponseDto;
   }
 
   async deletePost(user: AuthUser, postId: string): Promise<PostDeleteResponseDto> {
@@ -88,7 +105,7 @@ export class PostsService {
     });
 
     if (!post) {
-      throw new BadRequestException('Post not found');
+      throw new NotFoundException('Post not found');
     }
 
     if (post.authorId !== user.userId) {
@@ -97,6 +114,6 @@ export class PostsService {
 
     await this.entityManager.delete(PostEntity, { id: postId });
 
-    return post;
+    return post as PostDeleteResponseDto;
   }
 }

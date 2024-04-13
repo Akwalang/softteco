@@ -6,3 +6,9 @@ export class PostParamsDto {
   @IsUUID()
   postId: string;
 }
+
+export class CommentParamsDto extends PostParamsDto {
+  @ApiProperty()
+  @IsUUID()
+  commentId: string;
+}

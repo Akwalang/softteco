@@ -2,10 +2,12 @@ import { PickType } from '@nestjs/swagger';
 
 import { PostDto } from './common.dto';
 
-export class PostListItemResponseDto extends PickType(PostDto, [
+export class PostGetResponseDto extends PickType(PostDto, [
   'id',
   'title',
   'alias',
+  'content',
+  'comments',
   'author',
   'createdAt',
   'updatedAt',

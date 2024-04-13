@@ -1,5 +1,5 @@
-import { ApiProperty, PickType } from '@nestjs/swagger';
-import { IsDateString, IsString, IsUUID } from 'class-validator';
+import { PickType } from '@nestjs/swagger';
+
 import { PostDto } from './common.dto';
 
 export class PostUpdateRequestDto extends PickType(PostDto, [
