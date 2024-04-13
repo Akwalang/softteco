@@ -1,12 +1,26 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsEmail, IsString, IsUUID, ValidateIf } from 'class-validator';
+import { Transform } from 'class-transformer';
+
+import {
+  IsBoolean,
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  IsUUID,
+  ValidateIf,
+} from 'class-validator';
+
+import { trim } from '@app/common/utils/string/trim';
 
 export class SignInRequestDto {
   @ApiProperty()
+  @IsNotEmpty()
   @IsEmail()
+  @Transform(({ value }) => trim(value).toLowerCase())
   email: string;
 
   @ApiProperty()
+  @IsNotEmpty()
   @IsString()
   password: string;
 }
