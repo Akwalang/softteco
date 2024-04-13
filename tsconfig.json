@@ -18,12 +18,18 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@app/utils/env": [
-        "libs/utils/env/src"
+      "@app/common/entities": [
+        "libs/common/src/entities/"
       ],
-      "@app/utils/env/*": [
-        "libs/utils/env/src/*"
-      ]
+      "@app/common/entities/*": [
+        "libs/common/src/entities/*"
+      ],
+      "@app/common/utils": [
+        "libs/common/src/utils/"
+      ],
+      "@app/common/utils/*": [
+        "libs/common/src/utils/*"
+      ],
     }
   }
 }

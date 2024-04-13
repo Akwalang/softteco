@@ -28,13 +28,13 @@
         "tsConfigPath": "apps/client/tsconfig.app.json"
       }
     },
-    "utils/env": {
+    "common": {
       "type": "library",
-      "root": "libs/utils/env",
+      "root": "libs/common",
       "entryFile": "index",
-      "sourceRoot": "libs/utils/env/src",
+      "sourceRoot": "libs/common/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/utils/env/tsconfig.lib.json"
+        "tsConfigPath": "libs/common/tsconfig.lib.json"
       }
     }
   }
