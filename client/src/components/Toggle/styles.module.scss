@@ -1,0 +1,53 @@
+@import '../../settings.scss';
+
+.root {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.controlItem {
+  position: relative;
+  width: 50%;
+  max-width: 120px;
+  padding: 12px 0;
+  list-style: none;
+  text-align: center;
+  cursor: pointer;
+  overflow: hidden;
+
+  &:after {
+    content: '';
+
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 6px;
+    margin-bottom: -6px;
+    background-color: $button-bg-color;
+    transition: margin-bottom 0.2s;
+  }
+
+  &:hover, &.active {
+    &:after {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.scene {
+  width: 100%;
+  padding: 5px 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}

@@ -1,0 +1,23 @@
+@import '../../settings.scss';
+
+.root {
+  height: 540px;
+  display: flex;
+  flex-direction: row;
+  border: #ccc solid 1px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.image {
+  width: 60%;
+  background-image: url('/login.png');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.form {
+  width: 40%;
+  padding-top: 20px;
+  background-color: #f8f8fa;
+}

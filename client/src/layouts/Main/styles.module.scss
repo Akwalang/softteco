@@ -1,0 +1,36 @@
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.topLine {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  height: 48px;
+  background-color: #eaeaea;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.bodyWrapper {
+  width: 100%;
+  padding: 20px 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.body {
+  width: 100%;
+  max-width: 960px;
+}
+
+.title {
+  text-align: center;
+  font-size: 18px;
+}
+
+.content {
+  margin-top: 20px;
+}

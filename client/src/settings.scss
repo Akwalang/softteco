@@ -1,0 +1,23 @@
+$button-bg-color: #5888e3;
+$link-text-color: #5888e3;
+$border-color: #5b5b5b;
+
+$secondary-text-color: #888;
+
+@mixin Button {
+  display: block;
+  padding: 5px 12px;
+  line-height: 20px;
+  font-size: 14px;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 3px;
+  border: darken($button-bg-color, 15%) 1px solid;
+  background-color: $button-bg-color;
+  transition: background-color 0.2s;
+
+  &:hover {
+    color: #fff;
+    background-color: lighten($button-bg-color, 5%);
+  }
+}
