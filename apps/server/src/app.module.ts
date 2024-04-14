@@ -1,11 +1,11 @@
 import { Module, MiddlewareConsumer } from '@nestjs/common';
 
-import { DbModule } from './db/db.module';
-import { ConfigModule } from './config/config.module';
+import { DbModule } from './db';
+import { ConfigModule } from './config';
 import { AuthModule } from './auth';
-import { PostsModule } from './posts/posts.module';
-import { CommentsModule } from './comments/comments.module';
-import { UserModule } from './user/user.module';
+import { PostsModule } from './posts';
+import { CommentsModule } from './comments';
+import { UserModule } from './user';
 
 import { TraceMiddleware } from '@app/common/middlewares/trace';
 import { LoggerMiddleware } from '@app/common/middlewares/logger';
