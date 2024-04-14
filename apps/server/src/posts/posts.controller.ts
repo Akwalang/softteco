@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Patch, Delete, Param, Body } from '@nestjs/common';
+import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 
 import { PostsService } from './posts.service';
 
@@ -20,17 +21,24 @@ export class PostsController {
   constructor(private postsService: PostsService) {}
 
   @Get('')
+  @ApiOperation({ summary: 'Get list of posts' })
+  @ApiResponse({ status: 200, type: PostListItemResponseDto, isArray: true })
   getAllPosts(): Promise<PostListItemResponseDto[]> {
     return this.postsService.getAllPosts();
   }
 
   @Get(':postId')
+  @ApiOperation({ summary: 'Get the post by id' })
+  @ApiParam({ name: 'postId', type: 'string' })
+  @ApiResponse({ status: 200, type: PostGetResponseDto })
   getPost(@Param() { postId }: PostParamsDto): Promise<PostGetResponseDto> {
     return this.postsService.getPost(postId);
   }
 
   @Post('')
   @UseAuthGuard()
+  @ApiOperation({ summary: 'Create a new post' })
+  @ApiResponse({ status: 201, type: PostCreateResponseDto })
   createPost(
     @GetAuthUser() user: AuthUser,
     @Body() data: PostCreateRequestDto,
@@ -40,6 +48,9 @@ export class PostsController {
 
   @Patch(':postId')
   @UseAuthGuard()
+  @ApiOperation({ summary: 'Update the post by id' })
+  @ApiParam({ name: 'postId', type: 'string' })
+  @ApiResponse({ status: 200, type: PostUpdateResponseDto })
   updatePost(
     @GetAuthUser() user: AuthUser,
     @Param() { postId }: PostParamsDto,
@@ -50,6 +61,9 @@ export class PostsController {
 
   @Delete(':postId')
   @UseAuthGuard()
+  @ApiOperation({ summary: 'Delete the post by id' })
+  @ApiParam({ name: 'postId', type: 'string' })
+  @ApiResponse({ status: 204, type: PostDeleteResponseDto })
   deletePost(
     @GetAuthUser() user: AuthUser,
     @Param() { postId }: PostParamsDto,

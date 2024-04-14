@@ -8,4 +8,7 @@ export class PostCreateRequestDto extends PickType(PostDto, [
   'content',
 ] as const) {}
 
-export class PostCreateResponseDto extends OmitType(PostDto, ['comments'] as const) {}
+export class PostCreateResponseDto extends OmitType(PostDto, [
+  'author',
+  'comments',
+] as const) {}

@@ -1,4 +1,5 @@
 import { Controller, Param, Body, Post, Patch, Delete } from '@nestjs/common';
+import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 
 import { CommentsService } from './comments.service';
 
@@ -14,11 +15,15 @@ import {
 import { AuthUser, GetAuthUser, UseAuthGuard } from '../auth';
 
 @Controller('/posts/:postId/comments')
+@ApiParam({ name: 'postId', type: 'string' })
 export class CommentsController {
   constructor(private commentsService: CommentsService) {}
 
   @Post('')
   @UseAuthGuard()
+  @ApiOperation({ summary: 'Create a new comment' })
+  @ApiParam({ name: 'commentId', type: 'string' })
+  @ApiResponse({ status: 201, type: CommentCreateResponseDto })
   createComment(
     @GetAuthUser() user: AuthUser,
     @Param() { postId }: PostParamsDto,
@@ -29,6 +34,9 @@ export class CommentsController {
 
   @Patch(':commentId')
   @UseAuthGuard()
+  @ApiOperation({ summary: 'Update the comment by id' })
+  @ApiParam({ name: 'commentId', type: 'string' })
+  @ApiResponse({ status: 200, type: CommentUpdateResponseDto })
   updateComment(
     @GetAuthUser() user: AuthUser,
     @Param() { postId, commentId }: CommentParamsDto,
@@ -39,6 +47,9 @@ export class CommentsController {
 
   @Delete(':commentId')
   @UseAuthGuard()
+  @ApiOperation({ summary: 'Delete the comment by id' })
+  @ApiParam({ name: 'commentId', type: 'string' })
+  @ApiResponse({ status: 204, type: CommentUpdateResponseDto })
   deleteComment(
     @GetAuthUser() user: AuthUser,
     @Param() { postId, commentId }: CommentParamsDto,

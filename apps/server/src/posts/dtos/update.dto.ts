@@ -1,4 +1,4 @@
-import { PickType } from '@nestjs/swagger';
+import { OmitType, PickType } from '@nestjs/swagger';
 
 import { PostDto } from './common.dto';
 
@@ -8,4 +8,7 @@ export class PostUpdateRequestDto extends PickType(PostDto, [
   'content',
 ] as const) {}
 
-export class PostUpdateResponseDto extends PostDto {}
+export class PostUpdateResponseDto extends OmitType(PostDto, [
+  'author',
+  'comments',
+] as const) {}

@@ -1,4 +1,5 @@
 import { Controller, Post, Res, Body } from '@nestjs/common';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Response } from 'express';
 
 import { AuthService } from './auth.service';
@@ -11,6 +12,8 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('sign-up')
+  @ApiOperation({ summary: 'Sign up' })
+  @ApiResponse({ status: 201, type: SignInResponseDto })
   async signUp(
     @Res({ passthrough: true }) response: Response,
     @Body() data: SignUpRequestDto,
@@ -23,6 +26,8 @@ export class AuthController {
   }
 
   @Post('sign-in')
+  @ApiOperation({ summary: 'Sign in' })
+  @ApiResponse({ status: 200, type: SignInResponseDto })
   async signIn(
     @Res({ passthrough: true }) response: Response,
     @Body() data: SignInRequestDto,
@@ -37,6 +42,8 @@ export class AuthController {
   }
 
   @Post('sign-out')
+  @ApiOperation({ summary: 'Sign out' })
+  @ApiResponse({ status: 200, type: SignInResponseDto })
   signOut(@Res({ passthrough: true }) response: Response): SignInResponseDto {
     response.clearCookie(AUTH_COOKIE_NAME, COOKIE_SETTINGS);
 
