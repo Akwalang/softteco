@@ -9,10 +9,12 @@ export class LoggerMiddleware implements NestMiddleware {
 
   use(request: Request, response: Response, next: NextFunction) {
     const { ip, method, originalUrl } = request;
+
     const userAgent = request.get('user-agent') || '';
+    const body = JSON.stringify(request.body);
 
     this.logger.log(
-      `Request: ${method} ${originalUrl}, ip=${ip}, user-agent=${userAgent}`,
+      `Request: ${method} ${originalUrl}, ip=${ip}, user-agent=${userAgent} body=${body}`,
     );
 
     response.on('close', () => {

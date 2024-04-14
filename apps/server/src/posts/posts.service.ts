@@ -12,11 +12,16 @@ import {
   PostUpdateResponseDto,
   PostDeleteResponseDto,
 } from './dtos';
+
+import { Logger } from '@app/common/classes/logger';
 import { isDuplicateError } from '@app/common/utils/typeorm';
+
 import { AuthUser } from '../auth';
 
 @Injectable()
 export class PostsService {
+  private logger = new Logger(PostsService.name);
+
   constructor(private entityManager: EntityManager) {}
 
   async getAllPosts(): Promise<PostListItemResponseDto[]> {
@@ -57,6 +62,7 @@ export class PostsService {
     });
 
     if (!post) {
+      this.logger.log(`Post with id ${postId} not found`);
       throw new NotFoundException('Post not found');
     }
 
@@ -74,9 +80,11 @@ export class PostsService {
       });
     } catch (error) {
       if (isDuplicateError(error)) {
+        this.logger.log(`Post with alias "${data.alias}" already exists`);
         throw new BadRequestException('Post with this alias already exists');
       }
 
+      this.logger.error(error);
       throw error;
     }
   }
@@ -91,6 +99,9 @@ export class PostsService {
     });
 
     if (!post) {
+      this.logger.log(
+        `Post with id "${postId}" and author id "${user.userId}" already exists`,
+      );
       throw new BadRequestException('Post not found');
     }
 
@@ -105,10 +116,14 @@ export class PostsService {
     });
 
     if (!post) {
+      this.logger.log(`Post with id "${postId}" not found`);
       throw new NotFoundException('Post not found');
     }
 
     if (post.authorId !== user.userId) {
+      this.logger.log(
+        `User with id "${user.userId}" trying to remove not his post with id "${postId}"`,
+      );
       throw new BadRequestException('You cannot delete this post');
     }
 

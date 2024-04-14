@@ -14,9 +14,12 @@ import {
 import { AuthUser } from '../auth';
 
 import { isForeignKeyError } from '@app/common/utils/typeorm';
+import { Logger } from '@app/common/classes/logger';
 
 @Injectable()
 export class CommentsService {
+  private logger = new Logger(CommentsService.name);
+
   constructor(private entityManager: EntityManager) {}
 
   async createComment(
@@ -34,9 +37,11 @@ export class CommentsService {
       return comment as unknown as CommentCreateResponseDto;
     } catch (error) {
       if (isForeignKeyError(error)) {
+        this.logger.log(`Post with id ${postId} not found`);
         throw new NotFoundException('Post not found');
       }
 
+      this.logger.error(error);
       throw error;
     }
   }
@@ -51,15 +56,15 @@ export class CommentsService {
       where: {
         id: commentId,
         postId,
+        authorId: user.userId,
       },
     });
 
     if (!comment) {
+      this.logger.log(
+        `Comment with comment id ${commentId}, post id ${postId}, and author id ${user.userId} not found`,
+      );
       throw new NotFoundException('Comment not found');
-    }
-
-    if (comment.authorId !== user.userId) {
-      throw new BadRequestException('You cannot update this comment');
     }
 
     await this.entityManager.update(CommentEntity, { id: commentId }, { ...data });
@@ -80,10 +85,16 @@ export class CommentsService {
     });
 
     if (!comment) {
+      this.logger.log(
+        `Comment with comment id ${commentId} and post id ${postId} not found`,
+      );
       throw new NotFoundException('Comment not found');
     }
 
     if (comment.authorId !== user.userId) {
+      this.logger.log(
+        `User with id "${user.userId}" trying to remove not his comment with id "${commentId}"`,
+      );
       throw new BadRequestException('You cannot delete this comment');
     }
 
