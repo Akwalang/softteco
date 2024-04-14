@@ -18,11 +18,23 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
+      "@app/common/classes": [
+        "libs/common/src/classes/"
+      ],
+      "@app/common/classes/*": [
+        "libs/common/src/classes/*"
+      ],
       "@app/common/entities": [
         "libs/common/src/entities/"
       ],
       "@app/common/entities/*": [
         "libs/common/src/entities/*"
+      ],
+      "@app/common/middlewares": [
+        "libs/common/src/middlewares/"
+      ],
+      "@app/common/middlewares/*": [
+        "libs/common/src/middlewares/*"
       ],
       "@app/common/utils": [
         "libs/common/src/utils/"
