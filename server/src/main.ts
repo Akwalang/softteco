@@ -17,7 +17,8 @@ async function bootstrap() {
 
   app.enableCors({
     credentials: true,
-    origin: /https?:\/\/localhost(:\d+)?/,
+    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+    origin: [/http:\/\/localhost(:\d+)?/i],
   });
 
   const config = new DocumentBuilder()

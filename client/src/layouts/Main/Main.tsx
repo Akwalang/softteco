@@ -1,4 +1,5 @@
 import React from 'react';
+import { ErrorBoundary } from "react-error-boundary";
 
 import { Navigation } from '../../components';
 
@@ -19,8 +20,10 @@ export const Main = (props: IMainProps): JSX.Element => {
       </div>
       <div className={styles.bodyWrapper}>
         <div className={styles.body}>
-          <div className={styles.title}>{title}</div>
-          <div className={styles.content}>{children}</div>
+          <ErrorBoundary fallback={<div>Something went wrong</div>}>
+            <div className={styles.title}>{title}</div>
+            <div className={styles.content}>{children}</div>
+          </ErrorBoundary>
         </div>
       </div>
     </>

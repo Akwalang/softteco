@@ -1,14 +1,30 @@
+import { Link } from 'react-router-dom';
+
 import { Main } from '../../layouts';
-import { PostsList } from '../../components';
+import { Waiting, PostsList } from '../../components';
 
-import styles from "./styles.module.scss";
+import { useMe } from '../../hooks/useAuth';
+import { usePostsList } from '../../hooks/usePosts';
 
-import { mock } from './mock';
+import styles from './styles.module.scss';
 
-export const Posts = () => {
+export const PostsPage = (): JSX.Element => {
+  const userQuery = useMe();
+  const postsQuery = usePostsList();
+
+  if (!userQuery.isSuccess && !postsQuery.isSuccess) {
+    return <Waiting queries={[userQuery, postsQuery]} />;
+  }
+
   return (
     <Main title="Articles">
-      <PostsList posts={mock} />
+      {
+        userQuery.data?.isAuthorized &&
+        <div className={styles.controls}>
+          <Link className={styles.button} to="/editor/new">Create new post</Link>
+        </div>
+      }
+      <PostsList posts={postsQuery.data} />
     </Main>
   );
 };

@@ -4,9 +4,13 @@ $border-color: #5b5b5b;
 
 $secondary-text-color: #888;
 
+$loader-color-1: #5888e3;
+$loader-color-2: #888;
+
 @mixin Button {
   display: block;
-  padding: 5px 12px;
+  padding: 10px 12px;
+  text-align: center;
   line-height: 20px;
   font-size: 14px;
   color: #fff;

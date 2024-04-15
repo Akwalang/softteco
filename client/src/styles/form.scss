@@ -10,9 +10,6 @@
   }
 
   input[type="submit"] {
-    margin-top: 15px;
-    padding-top: 10px;
-    padding-bottom: 10px;
   }
 
   .title {
@@ -28,5 +25,9 @@
 
   .errorField {
     border-color: #d33671 !important;
+  }
+
+  .controls {
+    margin-top: 15px;
   }
 }

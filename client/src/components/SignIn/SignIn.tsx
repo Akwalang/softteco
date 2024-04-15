@@ -1,9 +1,13 @@
 import { useForm } from 'react-hook-form';
 import cn from 'classnames';
 
+import { useSignIn } from '../../hooks/useAuth';
+
 import styles from './styles.module.scss';
 
 export const SignIn = (): JSX.Element => {
+  const signInMutation = useSignIn();
+
   const {
     register,
     handleSubmit,
@@ -15,7 +19,7 @@ export const SignIn = (): JSX.Element => {
       <div className={styles.description}>
         <p>Sign in to pick up right where you left off and continue enjoying all the great things we've prepared for you.</p>
       </div>
-      <form className={styles.form} onSubmit={handleSubmit((data) => console.log(data))}>
+      <form className={styles.form} onSubmit={handleSubmit((data) => signInMutation.mutate(data))}>
         <div className={cn(styles.title, errors.email && styles.errorText)}>Email</div>
         <input
           placeholder="Email"
@@ -32,7 +36,9 @@ export const SignIn = (): JSX.Element => {
           {...register('password', { required: true })}
         />
 
-        <input type="submit" />
+        <div className={styles.controls}>
+          <input type="submit" />
+        </div>
       </form>
     </div>
   );

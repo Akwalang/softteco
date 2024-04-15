@@ -34,7 +34,13 @@ export class CommentsService {
         ...data,
       });
 
-      return comment as unknown as CommentCreateResponseDto;
+      return {
+        ...comment,
+        author: {
+          id: user.userId,
+          name: user.userName,
+        },
+      };
     } catch (error) {
       if (isForeignKeyError(error)) {
         this.logger.log(`Post with id ${postId} not found`);

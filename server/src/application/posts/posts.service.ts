@@ -34,12 +34,13 @@ export class PostsService {
         author: { id: true, name: true },
       },
       relations: ['author'],
+      order: { createdAt: 'DESC' },
     });
 
     return posts as PostListItemResponseDto[];
   }
 
-  async getPost(postId: string): Promise<PostGetResponseDto> {
+  async getPost(alias: string): Promise<PostGetResponseDto> {
     const post = await this.entityManager.findOne(PostEntity, {
       select: {
         id: true,
@@ -57,12 +58,17 @@ export class PostsService {
           author: { id: true, name: true },
         },
       },
-      where: { id: postId },
+      where: { alias },
+      order: {
+        comments: {
+          createdAt: 'ASC'
+        },
+      },
       relations: ['author', 'comments', 'comments.author'],
     });
 
     if (!post) {
-      this.logger.log(`Post with id ${postId} not found`);
+      this.logger.log(`Post with alias ${alias} not found`);
       throw new NotFoundException('Post not found');
     }
 

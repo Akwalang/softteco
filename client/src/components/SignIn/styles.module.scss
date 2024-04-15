@@ -11,3 +11,9 @@
 .form {
   margin-top: 5px;
 }
+
+.controls {
+  input[type="submit"] {
+    width: 100%;
+  }
+}

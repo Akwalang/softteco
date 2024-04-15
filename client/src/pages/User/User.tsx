@@ -1,20 +1,37 @@
 import { Main } from '../../layouts';
-import { Toggle, SignIn, SignUp } from '../../components';
+import { Waiting, Toggle, SignIn, SignUp, SignOut } from '../../components';
+
+import { useMe } from '../../hooks/useAuth';
 
 import styles from "./styles.module.scss";
 
-export const User = () => {
+export const UserPage = () => {
+  const userQuery = useMe(['user']);
+
+  const user = userQuery.data;
+
   return (
     <Main title="Authorization">
-      <div className={styles.root}>
-        <div className={styles.image} />
-        <div className={styles.form}>
-          <Toggle
-            items={['Sign in', 'Sign up']}
-            views={[SignIn, SignUp]}
-          />
+      <Waiting queries={[userQuery]}>
+        <div className={styles.root}>
+          <div className={styles.image} />
+          {
+            user?.isAuthorized &&
+            <div className={styles.action}>
+              <SignOut user={user} />
+            </div>
+          }
+          {
+            (!user || !user.isAuthorized) &&
+            <div className={styles.action}>
+              <Toggle
+                items={['Sign in', 'Sign up']}
+                views={[SignIn, SignUp]}
+              />
+            </div>
+          }
         </div>
-      </div>
+      </Waiting>
     </Main>
   );
 };

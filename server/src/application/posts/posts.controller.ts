@@ -11,7 +11,7 @@ import {
   PostDeleteResponseDto,
   PostParamsDto,
   PostUpdateRequestDto,
-  PostUpdateResponseDto,
+  PostUpdateResponseDto, PostAliasParamsDto
 } from './dtos';
 
 import { UseAuthGuard, GetAuthUser, AuthUser } from '../auth';
@@ -27,12 +27,12 @@ export class PostsController {
     return this.postsService.getAllPosts();
   }
 
-  @Get(':postId')
-  @ApiOperation({ summary: 'Get the post by id' })
-  @ApiParam({ name: 'postId', type: 'string' })
+  @Get(':alias')
+  @ApiOperation({ summary: 'Get the post by alias' })
+  @ApiParam({ name: 'alias', type: 'string' })
   @ApiResponse({ status: 200, type: PostGetResponseDto })
-  getPost(@Param() { postId }: PostParamsDto): Promise<PostGetResponseDto> {
-    return this.postsService.getPost(postId);
+  getPost(@Param() { alias }: PostAliasParamsDto): Promise<PostGetResponseDto> {
+    return this.postsService.getPost(alias);
   }
 
   @Post('')

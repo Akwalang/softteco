@@ -1,6 +1,6 @@
-import { Controller, Post, Res, Body } from '@nestjs/common';
+import { Controller, Post, Res, Body, Get, Req } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 
 import { AuthService } from './auth.service';
 
@@ -11,6 +11,15 @@ import { AUTH_COOKIE_NAME, COOKIE_SETTINGS } from './constants';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @Get('me')
+  @ApiOperation({ summary: 'Return user data' })
+  @ApiResponse({ status: 200, type: SignInResponseDto })
+  async me(@Req() request: Request): Promise<SignInResponseDto> {
+    const token = request.cookies[AUTH_COOKIE_NAME];
+
+    return this.authService.getTokenData(token);
+  }
+
   @Post('sign-up')
   @ApiOperation({ summary: 'Sign up' })
   @ApiResponse({ status: 201, type: SignInResponseDto })
@@ -18,11 +27,11 @@ export class AuthController {
     @Res({ passthrough: true }) response: Response,
     @Body() data: SignUpRequestDto,
   ): Promise<SignInResponseDto> {
-    const { isAuthorized, token } = await this.authService.signUp(data);
+    const { id, name, isAuthorized, token } = await this.authService.signUp(data);
 
     response.cookie(AUTH_COOKIE_NAME, token, COOKIE_SETTINGS);
 
-    return { isAuthorized };
+    return { id, name, isAuthorized };
   }
 
   @Post('sign-in')
@@ -32,13 +41,13 @@ export class AuthController {
     @Res({ passthrough: true }) response: Response,
     @Body() data: SignInRequestDto,
   ): Promise<SignInResponseDto> {
-    const { token, ...other } = await this.authService.signIn(data);
+    const { id, name, isAuthorized, token } = await this.authService.signIn(data);
 
-    if (other.isAuthorized) {
+    if (isAuthorized) {
       response.cookie(AUTH_COOKIE_NAME, token, COOKIE_SETTINGS);
     }
 
-    return other;
+    return { id, name, isAuthorized };
   }
 
   @Post('sign-out')

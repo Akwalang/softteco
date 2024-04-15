@@ -1,15 +1,9 @@
-import { Routes, Route } from 'react-router-dom';
+import { AppRouter } from './AppRouter';
 
-import { User, Posts, Post } from './pages';
+import './app.scss';
 
 function App(): JSX.Element {
-  return (
-    <Routes>
-      <Route exact path="/" element={<Posts />} />
-      <Route path="/user" element={<User />} />
-      <Route path="/posts/:alias" element={<Post />} />
-    </Routes>
-  );
+  return <AppRouter />;
 }
 
 export default App;

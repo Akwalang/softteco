@@ -8,5 +8,5 @@ export class CommentCreateResponseDto extends PickType(CommentDto, [
   'message',
   'createdAt',
   'updatedAt',
-  'authorId',
+  'author',
 ] as const) {}

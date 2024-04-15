@@ -3,6 +3,7 @@ declare const classNames: {
   readonly title: "title";
   readonly errorText: "errorText";
   readonly errorField: "errorField";
+  readonly controls: "controls";
   readonly description: "description";
 };
 export = classNames;

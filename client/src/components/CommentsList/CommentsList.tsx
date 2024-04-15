@@ -1,10 +1,12 @@
-import { Link } from 'react-router-dom';
-
-import styles from './styles.module.scss';
 import { Comment } from '../Comment/Comment';
 
+import styles from './styles.module.scss';
+
 interface ICommentsListProps {
-  postId: string;
+  post: {
+    id: string;
+    alias: string;
+  };
   comments: {
     id: string;
     createdAt: string;
@@ -13,17 +15,17 @@ interface ICommentsListProps {
       id: string;
       name: string;
     };
-  };
+  }[];
 }
 
 export const CommentsList = (props: ICommentsListProps): JSX.Element => {
-  const { comments } = props;
+  const { post, comments } = props;
 
   return (
     <div className={styles.root}>
       <div className={styles.title}>Comments</div>
       <div className={styles.comments}>
-        {comments.map((item) => <Comment key={item.id} {...item} />)}
+        {comments.map((item) => <Comment key={item.id} post={post} comment={item} />)}
       </div>
     </div>
   );

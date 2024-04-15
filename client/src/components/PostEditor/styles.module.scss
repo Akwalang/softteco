@@ -1,0 +1,29 @@
+@import '../../settings.scss';
+@import '../../styles/form.scss';
+
+.root {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  textarea {
+    min-width: 100%;
+    max-width: 100%;
+    width: 100%;
+    height: 200px;
+  }
+}
+
+.controls {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 6px;
+
+  .button {
+    @include Button;
+
+    width: 120px;
+  }
+}

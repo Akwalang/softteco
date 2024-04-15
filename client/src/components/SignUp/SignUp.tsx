@@ -1,9 +1,13 @@
 import { useForm } from 'react-hook-form';
 import cn from 'classnames';
 
+import { useSignUp } from '../../hooks/useAuth';
+
 import styles from './styles.module.scss';
 
 export const SignUp = (): JSX.Element => {
+  const signUpMutation = useSignUp();
+
   const {
     register,
     handleSubmit,
@@ -15,7 +19,7 @@ export const SignUp = (): JSX.Element => {
       <div className={styles.description}>
         <p>We're so excited to have you on board! Signing up is the first step to unlocking all the amazing features we have to offer.</p>
       </div>
-      <form className={styles.form} onSubmit={handleSubmit((data) => console.log(data))}>
+      <form className={styles.form} onSubmit={handleSubmit((data) => signUpMutation.mutate(data))}>
         <div className={cn(styles.title, errors.name && styles.errorText)}>Name</div>
         <input
           placeholder="Name"
@@ -40,7 +44,9 @@ export const SignUp = (): JSX.Element => {
           {...register('password', { required: true })}
         />
 
-        <input type="submit" />
+        <div className={styles.controls}>
+          <input type="submit" />
+        </div>
       </form>
     </div>
   );

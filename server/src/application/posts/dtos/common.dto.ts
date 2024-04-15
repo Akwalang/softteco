@@ -76,7 +76,9 @@ export class PostDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  @Transform(({ value }) => sanitizeHtml(trim(value)))
+  @Transform(({ value }) => {
+    return sanitizeHtml(trim(value), { allowedTags: ['p', 'br', 'b', 'i'] });
+  })
   content: string;
 
   @ApiProperty()
