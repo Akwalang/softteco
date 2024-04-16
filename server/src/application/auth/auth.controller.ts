@@ -15,7 +15,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Return user data' })
   @ApiResponse({ status: 200, type: SignInResponseDto })
   async me(@Req() request: Request): Promise<SignInResponseDto> {
-    const token = request.cookies[AUTH_COOKIE_NAME];
+    const token = request.cookies[AUTH_COOKIE_NAME] ?? '';
 
     return this.authService.getTokenData(token);
   }

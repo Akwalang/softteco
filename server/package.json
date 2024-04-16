@@ -51,7 +51,7 @@
     "@nestjs/testing": "^10.0.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/express": "^4.17.17",
-    "@types/jest": "^29.5.2",
+    "@types/jest": "^23.3.12",
     "@types/node": "^20.3.1",
     "@types/supertest": "^6.0.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
@@ -74,6 +74,16 @@
       "js",
       "json",
       "ts"
+    ],
+    "coveragePathIgnorePatterns": [
+      "main.ts",
+      ".dto.ts",
+      ".enum.ts",
+      ".module.ts",
+      ".entity.ts",
+      "env.(config|validation).ts",
+      "(comments|posts).controller.ts",
+      "./application/.*/index.ts"
     ],
     "rootDir": "src",
     "testRegex": ".*\\.spec\\.ts$",

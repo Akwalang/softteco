@@ -2,10 +2,9 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { EntityManager } from 'typeorm';
 
-import * as bcrypt from 'bcryptjs';
-
 import { UserEntity } from './entities/user.entity';
 
+import { bcrypt } from '../../common/utils/bcrypt';
 import { isDuplicateError } from '../../common/utils/typeorm';
 
 @Injectable()
@@ -13,7 +12,6 @@ export class UserService {
   constructor(
     private configService: ConfigService,
     private readonly entityManager: EntityManager,
-    // @InjectRepository(UserEntity) private userRepository: Repository<UserEntity>,
   ) {}
 
   async createUser(name: string, email: string, password: string): Promise<UserEntity> {
@@ -46,17 +44,9 @@ export class UserService {
     return isValidPassword ? user : null;
   }
 
-  hashPassword(password: string): Promise<string> {
+  private hashPassword(password: string): Promise<string> {
     const saltRounds = this.configService.get('auth.saltRounds');
 
-    return new Promise((resolve, reject) => {
-      bcrypt.genSalt(saltRounds, (error, salt) => {
-        if (error) return reject(error);
-
-        bcrypt.hash(password, salt, (error, hash) => {
-          error ? reject(error) : resolve(hash);
-        });
-      });
-    });
+    return bcrypt.hash(password, saltRounds);
   }
 }

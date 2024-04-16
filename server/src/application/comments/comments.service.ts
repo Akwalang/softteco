@@ -62,15 +62,18 @@ export class CommentsService {
       where: {
         id: commentId,
         postId,
-        authorId: user.userId,
       },
     });
 
     if (!comment) {
-      this.logger.log(
-        `Comment with comment id ${commentId}, post id ${postId}, and author id ${user.userId} not found`,
-      );
       throw new NotFoundException('Comment not found');
+    }
+
+    if (comment.authorId !== user.userId) {
+      this.logger.log(
+        `User with id "${user.userId}" trying to update not his comment with id "${commentId}"`,
+      );
+      throw new BadRequestException('Access denied');
     }
 
     await this.entityManager.update(CommentEntity, { id: commentId }, { ...data });
@@ -91,9 +94,6 @@ export class CommentsService {
     });
 
     if (!comment) {
-      this.logger.log(
-        `Comment with comment id ${commentId} and post id ${postId} not found`,
-      );
       throw new NotFoundException('Comment not found');
     }
 

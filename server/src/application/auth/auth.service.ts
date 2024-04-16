@@ -60,7 +60,7 @@ export class AuthService {
     };
   }
 
-  async parseToken(token: string): Promise<AuthUser | null> {
+  private async parseToken(token: string): Promise<AuthUser | null> {
     const secret = this.configService.get('jwt.secret');
 
     try {
@@ -72,7 +72,7 @@ export class AuthService {
     }
   }
 
-  generateToken(user: UserEntity): Promise<string> {
+  private generateToken(user: UserEntity): Promise<string> {
     const payload = { sub: user.id, userId: user.id, userName: user.name };
 
     const options = {

@@ -61,7 +61,7 @@ export class PostsService {
       where: { alias },
       order: {
         comments: {
-          createdAt: 'ASC'
+          createdAt: 'ASC',
         },
       },
       relations: ['author', 'comments', 'comments.author'],
@@ -80,10 +80,12 @@ export class PostsService {
     data: PostCreateRequestDto,
   ): Promise<PostCreateResponseDto> {
     try {
-      return await this.entityManager.save(PostEntity, {
+      const post = await this.entityManager.save(PostEntity, {
         ...data,
-        authorId: user.userId,
+        author: { id: user.userId },
       });
+
+      return { ...post, author: { id: user.userId, name: user.userName } };
     } catch (error) {
       if (isDuplicateError(error)) {
         this.logger.log(`Post with alias "${data.alias}" already exists`);
@@ -101,14 +103,18 @@ export class PostsService {
     data: PostUpdateRequestDto,
   ): Promise<PostUpdateResponseDto> {
     const post = await this.entityManager.findOne(PostEntity, {
-      where: { id: postId, author: { id: user.userId } },
+      where: { id: postId },
     });
 
     if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+
+    if (post.authorId !== user.userId) {
       this.logger.log(
-        `Post with id "${postId}" and author id "${user.userId}" already exists`,
+        `User with id "${user.userId}" trying to update not his post with id "${postId}"`,
       );
-      throw new BadRequestException('Post not found');
+      throw new BadRequestException('Access denied');
     }
 
     await this.entityManager.update(PostEntity, { id: postId }, { ...data });
@@ -122,7 +128,6 @@ export class PostsService {
     });
 
     if (!post) {
-      this.logger.log(`Post with id "${postId}" not found`);
       throw new NotFoundException('Post not found');
     }
 
