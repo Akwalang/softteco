@@ -3,20 +3,20 @@ version: "3.8"
 services:
   db:
     image: postgres
-    container_name: softteco_postgres
+    container_name: softteco_app_postgres
     restart: always
-    env_file:
-      - .env
     ports:
-      - "${DATABASE_PORT}:5432"
+      - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     volumes:
-      - softteco_postgres:/var/lib/postgresql/data
+      - softteco_app_postgres:/var/lib/postgresql/data
+    networks:
+      - default
   pgadmin:
     image: dpage/pgadmin4
-    container_name: softteco_pgadmin
+    container_name: softteco_app_pgadmin
     restart: always
     ports:
       - "9011:80"
@@ -24,8 +24,64 @@ services:
       PGADMIN_DEFAULT_EMAIL: root@pgadmin.org
       PGADMIN_DEFAULT_PASSWORD: root
     volumes:
-      - softteco_pgadmin:/var/lib/pgadmin
+      - softteco_app_pgadmin:/var/lib/pgadmin
+    networks:
+      - default
+  migration:
+    build:
+        context: ./server
+        dockerfile: Dockerfile.migration
+    container_name: softteco_app_migration
+    restart: on-failure
+    environment:
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_NAME: blog
+    depends_on:
+      - db
+    networks:
+      - default
+  server:
+    build: ./server
+    container_name: softteco_app_server
+    restart: always
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: development
+      HTTP_HOST: localhost
+      HTTP_PORT: 3001
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_NAME: blog
+      AUTH_SALT_ROUNDS: 10
+      JWT_SECRET: 9uaekhV482483GWYWZ3NLQyHS1WGt1GFJ390
+      JWT_EXPIRES_IN: 2d
+    depends_on:
+      - migration
+    networks:
+      - default
+  client:
+    build: ./client
+    container_name: softteco_app_client
+    restart: always
+    ports:
+      - "3000:4173"
+    environment:
+      VITE_API_URL: http://server:3001
+    depends_on:
+      - server
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge
 
 volumes:
-  softteco_postgres:
-  softteco_pgadmin:
+  softteco_app_postgres:
+  softteco_app_pgadmin:
