@@ -6,6 +6,8 @@ import { PostEditor } from '../../components';
 
 import { usePostCreate } from '../../hooks/usePosts';
 
+import { IPostCreate } from '../../interfaces/posts';
+
 import styles from './styles.module.scss';
 
 export const PostCreatePage = (): JSX.Element => {
@@ -14,9 +16,14 @@ export const PostCreatePage = (): JSX.Element => {
   const postCreateMutation = usePostCreate();
   const navigate = useNavigate();
 
-  const onSubmit = useCallback(async (data) => {
+  const onSubmit = useCallback(async (data: IPostCreate) => {
     const result = await postCreateMutation.mutateAsync(data);
-    result?.error ? setError(result.message) : navigate(`/posts/${data.alias}`);
+
+    if ('error' in result) {
+      setError(result.message)
+    } else {
+      navigate(`/posts/${data.alias}`)
+    }
   }, [postCreateMutation, navigate, setError]);
 
   return (

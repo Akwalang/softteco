@@ -1,10 +1,17 @@
+import { IComment } from './comments';
+
+export interface IAuthor {
+  id: string;
+  name: string;
+}
+
 export interface IPostListItem {
   id: string;
-  authorId: string;
   title: string;
   alias: string;
   createdAt: string;
   updatedAt: string;
+  author: IAuthor;
 }
 
 export interface IPost {
@@ -14,8 +21,8 @@ export interface IPost {
   content: string;
   createdAt: string;
   updatedAt: string;
-  comments: unknown;
-  author: unknown;
+  comments: IComment[];
+  author: IAuthor;
 }
 
 export interface IPostCreate {

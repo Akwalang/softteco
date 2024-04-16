@@ -2,9 +2,7 @@ import { Link } from 'react-router-dom';
 
 import styles from './styles.module.scss';
 
-interface INavigationProps {}
-
-export const Navigation = (props: INavigationProps): JSX.Element => {
+export const Navigation = (): JSX.Element => {
   return (
     <div className={styles.root}>
       <ul className={styles.menu}>

@@ -4,6 +4,7 @@ declare const classNames: {
   readonly errorText: "errorText";
   readonly errorField: "errorField";
   readonly controls: "controls";
+  readonly root: "root";
   readonly field: "field";
   readonly submit: "submit";
   readonly cancelButton: "cancelButton";

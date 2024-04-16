@@ -1,23 +1,14 @@
 import { Link } from 'react-router-dom';
 
+import { IPostListItem } from '../../interfaces/posts';
+
 import styles from './styles.module.scss';
 
-interface IPost {
-  id: string;
-  createdAt: string;
-  title: string;
-  alias: string;
-  author: {
-    id: string;
-    name: string;
-  };
-}
-
 interface IPostsListProps {
-  posts: IPost[];
+  posts: IPostListItem[];
 }
 
-const Post = (props: IPost) => {
+const Post = (props: IPostListItem) => {
   return (
     <li className={styles.item}>
       <Link to={`/posts/${props.alias}`} className={styles.link}>

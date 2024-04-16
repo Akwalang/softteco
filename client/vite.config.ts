@@ -4,4 +4,7 @@ import sassDts from 'vite-plugin-sass-dts'
 
 export default defineConfig({
   plugins: [react(), sassDts()],
+  server: {
+    port: 3000,
+  },
 })

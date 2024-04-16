@@ -1,21 +1,13 @@
 import { Comment } from '../Comment/Comment';
 
+import { IPost } from '../../interfaces/posts';
+import { IComment } from '../../interfaces/comments';
+
 import styles from './styles.module.scss';
 
 interface ICommentsListProps {
-  post: {
-    id: string;
-    alias: string;
-  };
-  comments: {
-    id: string;
-    createdAt: string;
-    message: string;
-    author: {
-      id: string;
-      name: string;
-    };
-  }[];
+  post: IPost;
+  comments: IComment[];
 }
 
 export const CommentsList = (props: ICommentsListProps): JSX.Element => {

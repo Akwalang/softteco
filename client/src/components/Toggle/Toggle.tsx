@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import cn from 'classnames';
 
 import styles from './styles.module.scss';
@@ -25,7 +25,7 @@ const ControlItem = (props: IControllItemProps): JSX.Element => {
 
 interface IToggleProps {
   items: string[];
-  views: React.ReactNode[];
+  views: (() => JSX.Element)[];
 }
 
 export const Toggle = ({ items, views }: IToggleProps): JSX.Element => {

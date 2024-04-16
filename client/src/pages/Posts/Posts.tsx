@@ -24,7 +24,7 @@ export const PostsPage = (): JSX.Element => {
           <Link className={styles.button} to="/editor/new">Create new post</Link>
         </div>
       }
-      <PostsList posts={postsQuery.data} />
+      <PostsList posts={postsQuery.data!} />
     </Main>
   );
 };

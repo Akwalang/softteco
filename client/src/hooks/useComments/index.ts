@@ -9,7 +9,7 @@ export const useCommentsCreate = (postId: string, postAlias: string) => {
 
   return useMutation({
     mutationFn: (comment: ICommentCreate) => Comments.createComment(postId, comment),
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['post', postAlias] });
     },
   });
@@ -20,12 +20,7 @@ export const useCommentsUpdate = (postId: string, postAlias: string, commentId: 
 
   return useMutation({
     mutationFn: (comment: ICommentUpdate) => Comments.updateComment(postId, commentId, comment),
-    onSuccess: (data) => {
-      const current = queryClient.getQueryData(['post', postAlias]);
-      const target = current.comments.find((item) => item.id === data.id);
-
-      Object.assign(target, data);
-
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['post', postAlias] });
     },
   });
@@ -36,7 +31,7 @@ export const useCommentsDelete = (postId: string, postAlias: string, commentId: 
 
   return useMutation({
     mutationFn: () => Comments.deleteComment(postId, commentId),
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['post', postAlias] });
     },
   });

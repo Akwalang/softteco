@@ -1,7 +1,9 @@
 @import '../../settings.scss';
 @import '../../styles/form.scss';
 
-.root {}
+.root {
+  display: block;
+}
 
 .title {
   font-size: 18px;

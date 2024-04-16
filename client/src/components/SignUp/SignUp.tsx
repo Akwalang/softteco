@@ -5,6 +5,12 @@ import { useSignUp } from '../../hooks/useAuth';
 
 import styles from './styles.module.scss';
 
+type FormValues = {
+  name: string;
+  email: string;
+  password: string;
+};
+
 export const SignUp = (): JSX.Element => {
   const signUpMutation = useSignUp();
 
@@ -12,14 +18,14 @@ export const SignUp = (): JSX.Element => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<FormValues>();
 
   return (
     <div className={styles.root}>
       <div className={styles.description}>
         <p>We're so excited to have you on board! Signing up is the first step to unlocking all the amazing features we have to offer.</p>
       </div>
-      <form className={styles.form} onSubmit={handleSubmit((data) => signUpMutation.mutate(data))}>
+      <form className={styles.form} onSubmit={handleSubmit((data: FormValues) => signUpMutation.mutate(data))}>
         <div className={cn(styles.title, errors.name && styles.errorText)}>Name</div>
         <input
           placeholder="Name"

@@ -6,7 +6,7 @@ export const AppRouter = (): JSX.Element => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route exact path="/" element={<PostsPage />} />
+        <Route path="/" element={<PostsPage />} />
         <Route path="/user" element={<UserPage />} />
         <Route path="/posts/:alias" element={<PostPage />} />
         <Route path="/editor/new" element={<PostCreatePage />} />

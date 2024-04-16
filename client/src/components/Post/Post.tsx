@@ -3,12 +3,14 @@ import { useNavigate } from 'react-router';
 import { usePostDelete } from '../../hooks/usePosts';
 import { formatDate } from '../../utils/formatDate';
 
+import { IAuthUser } from '../../interfaces/auth';
 import { IPost } from '../../interfaces/posts';
 
 import styles from './styles.module.scss';
 
 interface IPostProps {
   post: IPost;
+  user: IAuthUser;
 }
 
 export const Post = ({ post, user }: IPostProps): JSX.Element => {
@@ -21,7 +23,7 @@ export const Post = ({ post, user }: IPostProps): JSX.Element => {
   const onEdit = () => navigate(`/editor/update/${post.alias}`);
 
   const onDelete = async () => {
-    await postDeleteMutation.mutateAsync(post.id);
+    await postDeleteMutation.mutateAsync();
     navigate(`/`)
   };
 

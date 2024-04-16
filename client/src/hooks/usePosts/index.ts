@@ -1,37 +1,36 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient, UseQueryResult, UseMutationResult } from '@tanstack/react-query';
 
 import * as Posts from '../../api/posts';
 
-import { IPostCreate, IPostUpdate } from '../../interfaces/posts';
+import { IPostListItem, IPost, IPostCreate, IPostUpdate } from '../../interfaces/posts';
+import { IError } from '../../interfaces/error';
 
-type Result = ReturnType<typeof useQuery>;
-
-export const usePostsList = (): Result => {
+export const usePostsList = (): UseQueryResult<IPostListItem[], Error> => {
   return useQuery({
     queryKey: ['posts'],
     queryFn: () => Posts.getPosts(),
   });
 };
 
-export const usePost = (alias: string): Result => {
+export const usePost = (alias: string): UseQueryResult<IPost, Error> => {
   return useQuery({
     queryKey: ['post', alias],
     queryFn: () => Posts.getPost(alias),
   });
 };
 
-export const usePostCreate = () => {
+export const usePostCreate = (): UseMutationResult<IPost | IError, unknown, IPostCreate, unknown> => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (post: IPostCreate) => Posts.createPost(post),
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['posts'] });
     },
   });
 };
 
-export const usePostUpdate = (postId: string) => {
+export const usePostUpdate = (postId: string): UseMutationResult<IPost | IError, unknown, IPostUpdate, unknown> => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -43,12 +42,12 @@ export const usePostUpdate = (postId: string) => {
   });
 };
 
-export const usePostDelete = (postId: string) => {
+export const usePostDelete = (postId: string): UseMutationResult<IPost, unknown, void, unknown> => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: () => Posts.deletePost(postId),
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['posts'] });
     },
   });

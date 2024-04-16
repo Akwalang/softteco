@@ -6,7 +6,7 @@ import { useMe } from '../../hooks/useAuth';
 import styles from "./styles.module.scss";
 
 export const UserPage = () => {
-  const userQuery = useMe(['user']);
+  const userQuery = useMe();
 
   const user = userQuery.data;
 

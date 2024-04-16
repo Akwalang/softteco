@@ -5,6 +5,11 @@ import { useSignIn } from '../../hooks/useAuth';
 
 import styles from './styles.module.scss';
 
+type FormValues = {
+  email: string;
+  password: string;
+};
+
 export const SignIn = (): JSX.Element => {
   const signInMutation = useSignIn();
 
@@ -12,14 +17,14 @@ export const SignIn = (): JSX.Element => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<FormValues>();
 
   return (
     <div className={styles.root}>
       <div className={styles.description}>
         <p>Sign in to pick up right where you left off and continue enjoying all the great things we've prepared for you.</p>
       </div>
-      <form className={styles.form} onSubmit={handleSubmit((data) => signInMutation.mutate(data))}>
+      <form className={styles.form} onSubmit={handleSubmit((data: FormValues) => signInMutation.mutate(data))}>
         <div className={cn(styles.title, errors.email && styles.errorText)}>Email</div>
         <input
           placeholder="Email"

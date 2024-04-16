@@ -1,9 +1,10 @@
-type FetchOptions = Parameters<typeof fetch>[1];
+/* eslint-disable @typescript-eslint/no-explicit-any */
+type FetchOptions = Exclude<Parameters<typeof fetch>[1], undefined>;
 
-export const request = async <T extends Record<string, unknown>>(
+export const request = async <T extends Record<string, any>>(
   url: string,
   method: FetchOptions['method'] = 'GET',
-  body?: FetchOptions['body'],
+  body?: Record<string, any>,
   headers?: FetchOptions['headers'],
 ): Promise<T> => {
   const options: FetchOptions = { method };

@@ -7,21 +7,27 @@ import { IPostCreate, IPostUpdate } from '../../interfaces/posts';
 import styles from './styles.module.scss';
 
 interface IPostEditorProps {
-  post: IPostUpdate;
-  onCancel: () => void;
+  post?: IPostUpdate;
+  onCancel?: () => void;
   onSubmit: (data: IPostCreate) => void;
 }
+
+type FormValues = {
+  title: string;
+  alias: string;
+  content: string;
+};
 
 export const PostEditor = memo(({ post, onCancel, onSubmit }: IPostEditorProps): JSX.Element => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<FormValues>();
 
   return (
     <div className={styles.root}>
-      <form className={styles.form} onSubmit={handleSubmit((data: IPostCreate) => onSubmit(data))}>
+      <form className={styles.form} onSubmit={handleSubmit((data: FormValues) => onSubmit(data))}>
         <div className={cn(styles.title, errors.title && styles.errorText)}>Title</div>
         <input
           type="text"

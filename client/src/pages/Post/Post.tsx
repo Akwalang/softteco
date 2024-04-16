@@ -9,16 +9,17 @@ import { usePost } from '../../hooks/usePosts';
 import { useCommentsCreate } from '../../hooks/useComments';
 
 import styles from "./styles.module.scss";
+import { ICommentCreate } from '../../interfaces/comments';
 
 export const PostPage = (): JSX.Element => {
   const { alias } = useParams<{ alias: string }>();
 
   const userQuery = useMe();
-  const postQuery = usePost(alias);
+  const postQuery = usePost(alias!);
 
-  const commentCreateMutation = useCommentsCreate(postQuery.data?.id, alias);
+  const commentCreateMutation = useCommentsCreate(postQuery.data?.id || '', alias!);
 
-  const onCommentAdd = useCallback((data) => {
+  const onCommentAdd = useCallback((data: ICommentCreate) => {
     commentCreateMutation.mutate(data);
   }, [commentCreateMutation]);
 

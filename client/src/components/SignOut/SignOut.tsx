@@ -11,7 +11,7 @@ interface ISignOutProps {
 export const SignOut = (props: ISignOutProps): JSX.Element => {
   const { user } = props;
 
-  const authSignOutMutation = useSignOut();
+  const signOutMutation = useSignOut();
 
   return (
     <div className={styles.root}>
@@ -23,7 +23,7 @@ export const SignOut = (props: ISignOutProps): JSX.Element => {
         <li>Name: {user.name}</li>
       </ul>
       <div className={styles.action}>
-        <span className={styles.button} onClick={() => authSignOutMutation.mutate()}>
+        <span className={styles.button} onClick={() => signOutMutation.mutate()}>
           Sign out
         </span>
       </div>

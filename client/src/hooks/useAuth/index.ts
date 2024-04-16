@@ -1,20 +1,17 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient, UseQueryResult, UseMutationResult } from '@tanstack/react-query';
 
 import * as Auth from '../../api/auth';
 
-import { IAuthSignIn, IAuthSignUp } from '../../interfaces/auth';
+import { IAuthSignIn, IAuthSignUp, IAuthUser } from '../../interfaces/auth';
 
-type QueryResult = ReturnType<typeof useQuery>;
-type MutationResult = ReturnType<typeof useMutation>;
-
-export const useMe = (): QueryResult => {
+export const useMe = (): UseQueryResult<IAuthUser, Error> => {
   return useQuery({
     queryKey: ['auth'],
-    queryFn: () => Auth.me(),
+    queryFn: (): Promise<IAuthUser> => Auth.me(),
   });
 };
 
-export const useSignIn = (): MutationResult => {
+export const useSignIn = (): UseMutationResult<IAuthUser, unknown, IAuthSignIn, unknown> => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -26,7 +23,7 @@ export const useSignIn = (): MutationResult => {
   });
 };
 
-export const useSignUp = (): MutationResult => {
+export const useSignUp = (): UseMutationResult<IAuthUser, unknown, IAuthSignUp, unknown> => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -38,7 +35,7 @@ export const useSignUp = (): MutationResult => {
   });
 };
 
-export const useSignOut = (): MutationResult => {
+export const useSignOut = (): UseMutationResult<IAuthUser, unknown, void, unknown> => {
   const queryClient = useQueryClient();
 
   return useMutation({

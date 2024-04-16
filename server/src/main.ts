@@ -2,12 +2,13 @@ import * as cookieParser from 'cookie-parser';
 
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, Logger } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './application/app.module';
 
 async function bootstrap() {
+  const logger = new Logger('bootstrap');
   const app = await NestFactory.create(AppModule);
 
   const configService = app.get<ConfigService>(ConfigService);
@@ -33,7 +34,9 @@ async function bootstrap() {
   const host = configService.get('server.host');
   const port = configService.get('server.port');
 
-  await app.listen(port, host);
+  await app
+    .listen(port, host)
+    .then(() => logger.log(`Server is running on http://${host}:${port}`));
 }
 
 bootstrap();

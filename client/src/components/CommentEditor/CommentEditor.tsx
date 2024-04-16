@@ -13,6 +13,10 @@ interface ICommentEditorProps {
   onSubmit: (data: ICommentUpdate) => void;
 }
 
+type FormValues = {
+  message: string;
+};
+
 export const CommentEditor = memo((props: ICommentEditorProps): JSX.Element => {
   const { title, value = '', onCancel, onSubmit } = props;
 
@@ -21,17 +25,17 @@ export const CommentEditor = memo((props: ICommentEditorProps): JSX.Element => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm<FormValues>();
 
-  const createComment = (data) => {
+  const createComment = (data: ICommentUpdate) => {
     onSubmit(data);
     reset();
   };
 
   return (
     <div className={styles.root}>
-      <form className={styles.form} onSubmit={handleSubmit((data: ICommentUpdate) => createComment(data))}>
-        {title && <div className={cn(styles.title, errors.name && styles.errorText)}>{title}</div>}
+      <form className={styles.form} onSubmit={handleSubmit((data: FormValues) => createComment(data))}>
+        {title && <div className={cn(styles.title, errors.message && styles.errorText)}>{title}</div>}
         <div className={styles.field}>
           <textarea {...register('message', { value, required: true })} />
         </div>

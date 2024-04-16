@@ -9,7 +9,7 @@ interface IWaitingProps {
     isError: boolean;
     isSuccess: boolean;
   }[];
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export const Waiting = ({ queries, children }: IWaitingProps): JSX.Element => {

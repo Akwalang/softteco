@@ -5,6 +5,8 @@ import { CommentEditor } from '../CommentEditor/CommentEditor';
 import { useQueryStore } from '../../hooks/useQueryStore';
 import { useCommentsUpdate, useCommentsDelete } from '../../hooks/useComments';
 
+import { ICommentUpdate } from '../../interfaces/comments';
+
 import { formatDate } from '../../utils/formatDate';
 
 import styles from './styles.module.scss';
@@ -36,7 +38,7 @@ export const Comment = ({ post, comment }: ICommentsProps): JSX.Element => {
 
   const isAuthor = user?.id === comment.author.id;
 
-  const onUpdate = useCallback((data) => {
+  const onUpdate = useCallback((data: ICommentUpdate) => {
     commentUpdateMutation.mutate(data);
     setIsEditing(false);
   }, [commentUpdateMutation]);

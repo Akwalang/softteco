@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { EntityManager } from 'typeorm';
 
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 
 import { UserEntity } from './entities/user.entity';
 
@@ -49,6 +49,14 @@ export class UserService {
   hashPassword(password: string): Promise<string> {
     const saltRounds = this.configService.get('auth.saltRounds');
 
-    return bcrypt.hash(password, saltRounds);
+    return new Promise((resolve, reject) => {
+      bcrypt.genSalt(saltRounds, (error, salt) => {
+        if (error) return reject(error);
+
+        bcrypt.hash(password, salt, (error, hash) => {
+          error ? reject(error) : resolve(hash);
+        });
+      });
+    });
   }
 }
