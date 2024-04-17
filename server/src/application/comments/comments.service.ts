@@ -34,6 +34,8 @@ export class CommentsService {
         ...data,
       });
 
+      delete comment.authorId;
+
       return {
         ...comment,
         author: {

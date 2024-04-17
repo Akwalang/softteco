@@ -37,7 +37,7 @@ describe('AuthController', () => {
         cookies: {
           [AUTH_COOKIE_NAME]: token,
         },
-      } as Request;
+      } as unknown as Request;
 
       await controller.me(request);
 

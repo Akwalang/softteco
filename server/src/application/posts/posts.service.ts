@@ -79,11 +79,17 @@ export class PostsService {
     user: AuthUser,
     data: PostCreateRequestDto,
   ): Promise<PostCreateResponseDto> {
+    if (!data.alias) {
+      throw new BadRequestException('Alias should not be empty');
+    }
+
     try {
       const post = await this.entityManager.save(PostEntity, {
         ...data,
         author: { id: user.userId },
       });
+
+      delete post.authorId;
 
       return { ...post, author: { id: user.userId, name: user.userName } };
     } catch (error) {
@@ -119,13 +125,17 @@ export class PostsService {
 
     await this.entityManager.update(PostEntity, { id: postId }, { ...data });
 
-    return { ...post, ...data } as PostUpdateResponseDto;
+    const result = { ...post, ...data };
+
+    delete result.authorId;
+
+    return result;
   }
 
   async deletePost(user: AuthUser, postId: string): Promise<PostDeleteResponseDto> {
-    const post = await this.entityManager.findOne(PostEntity, {
+    const post = (await this.entityManager.findOne(PostEntity, {
       where: { id: postId },
-    });
+    })) as PostEntity;
 
     if (!post) {
       throw new NotFoundException('Post not found');
@@ -139,6 +149,8 @@ export class PostsService {
     }
 
     await this.entityManager.delete(PostEntity, { id: postId });
+
+    delete post.authorId;
 
     return post as PostDeleteResponseDto;
   }

@@ -36,7 +36,7 @@ describe('AuthController', () => {
       token: string | null,
     ): { context: ExecutionContext; request: Request } => {
       const cookies = { [AUTH_COOKIE_NAME]: token };
-      const request = { cookies } as Request;
+      const request = { cookies } as unknown as Request;
 
       if (!token) {
         delete request.cookies[AUTH_COOKIE_NAME];
@@ -101,7 +101,7 @@ describe('AuthController', () => {
   describe('getUserData', () => {
     const createRequest = (token: string | null): Request => {
       const cookies = { [AUTH_COOKIE_NAME]: token };
-      const request = { cookies } as Request;
+      const request = { cookies } as unknown as Request;
 
       if (!token) {
         delete request.cookies[AUTH_COOKIE_NAME];

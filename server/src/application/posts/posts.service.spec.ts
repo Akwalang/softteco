@@ -185,6 +185,8 @@ describe('PostsService', () => {
         ...postUpdate,
       };
 
+      delete expectedResult.authorId;
+
       jest.spyOn(entityManager, 'findOne').mockResolvedValue(Promise.resolve(postRecord));
 
       const result = await service.updatePost(user, postId, postUpdate);

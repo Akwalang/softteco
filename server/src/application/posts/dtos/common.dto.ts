@@ -63,21 +63,31 @@ export class PostDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  @Transform(({ value }) => sanitizeHtml(trim(value), { allowedTags: [] }))
+  @Transform(({ value }) => {
+    return sanitizeHtml(trim(value), { allowedTags: [], allowedAttributes: {} });
+  })
   title: string;
 
   @ApiProperty()
   @IsString()
-  @Transform(({ value, obj }) =>
-    sanitizeHtml(toAlias(value || obj.title), { allowedTags: [] }),
-  )
+  @Transform(({ value, obj }) => {
+    return toAlias(
+      sanitizeHtml(value || obj.title, {
+        allowedTags: [],
+        allowedAttributes: {},
+      }),
+    );
+  })
   alias: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
   @Transform(({ value }) => {
-    return sanitizeHtml(trim(value), { allowedTags: ['p', 'br', 'b', 'i'] });
+    return sanitizeHtml(trim(value), {
+      allowedTags: ['p', 'br', 'b', 'i'],
+      allowedAttributes: {},
+    });
   })
   content: string;
 

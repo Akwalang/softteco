@@ -58,6 +58,8 @@ describe('CommentsService', () => {
         },
       };
 
+      delete expectedResult.authorId;
+
       jest.spyOn(entityManager, 'save').mockResolvedValue(Promise.resolve(commentRecord));
 
       const result = await service.createComment(user, postId, comment);

@@ -26,7 +26,12 @@ export class CommentDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  @Transform(({ value }) => sanitizeHtml(trim(value), { allowedTags: ['br', 'b', 'i'] }))
+  @Transform(({ value }) => {
+    return sanitizeHtml(trim(value), {
+      allowedTags: ['br', 'b', 'i'],
+      allowedAttributes: {},
+    });
+  })
   message: string;
 
   @ApiProperty()
