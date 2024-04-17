@@ -23,7 +23,7 @@ export const PostCreatePage = (): JSX.Element => {
       if ("error" in result) {
         setError(result.message);
       } else {
-        navigate(`/posts/${data.alias.toLowerCase()}`);
+        navigate(`/`);
       }
     },
     [postCreateMutation, navigate, setError],

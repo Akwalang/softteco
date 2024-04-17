@@ -37,6 +37,8 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  color: #1a1a1a;
+  background-color: #fff;
 }
 
 h1 {
@@ -69,6 +71,7 @@ input[type="password"] {
   padding: 12px 9px;
   border-radius: 3px;
   border: #474962 1px dashed;
+  background-color: #fff;
   transition: border-color 0.2s;
 
   &:focus {
