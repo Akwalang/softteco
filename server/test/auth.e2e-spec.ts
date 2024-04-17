@@ -22,8 +22,6 @@ describe('AuthController (e2e)', () => {
   let agentSigned: Agent;
   let agentUnsigned: Agent;
 
-  const now = Date.now();
-
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],

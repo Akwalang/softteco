@@ -14,7 +14,7 @@ import { createAgents } from './utils/createAgents';
 import { fakeComment } from './fakers/comment';
 import { fakePost } from './fakers/post';
 
-import { USER_1_ID, USER_1_NAME } from './constants/creadentials';
+import { USER_1_ID } from './constants/creadentials';
 
 describe('PostsController (e2e)', () => {
   let app: INestApplication;
@@ -23,8 +23,6 @@ describe('PostsController (e2e)', () => {
   let agentUnsigned: Agent;
   let agentAuthor: Agent;
   let agentOther: Agent;
-
-  const now = Date.now();
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -63,6 +61,8 @@ describe('PostsController (e2e)', () => {
     });
 
     expect(response.statusCode).toBe(401);
+
+    await entityManager.delete(PostEntity, { id: post.id });
   });
 
   it('Create new comment from signed user: [post] /posts/:postId/comments/:commentId', async () => {

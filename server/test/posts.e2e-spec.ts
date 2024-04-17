@@ -22,8 +22,6 @@ describe('PostsController (e2e)', () => {
   let agentAuthor: Agent;
   let agentOther: Agent;
 
-  const now = Date.now();
-
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
@@ -127,10 +125,10 @@ describe('PostsController (e2e)', () => {
   });
 
   it('Delete post from not author: [delete] /posts/:id', async () => {
+    const initPost = fakePost();
+
     const post = await entityManager.save(PostEntity, {
-      title: `Test post ${now} 5`,
-      alias: `test-post-${now}-5`,
-      content: '<p>Cooking is more than <i>just</i> a daily necessity.</p>',
+      ...initPost,
       authorId: USER_1_ID,
     });
 
