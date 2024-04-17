@@ -1,12 +1,12 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
-import { Main } from '../../layouts';
-import { Waiting, PostsList } from '../../components';
+import { Main } from "../../layouts";
+import { Waiting, PostsList } from "../../components";
 
-import { useMe } from '../../hooks/useAuth';
-import { usePostsList } from '../../hooks/usePosts';
+import { useMe } from "../../hooks/useAuth";
+import { usePostsList } from "../../hooks/usePosts";
 
-import styles from './styles.module.scss';
+import styles from "./styles.module.scss";
 
 export const PostsPage = (): JSX.Element => {
   const userQuery = useMe();
@@ -18,13 +18,14 @@ export const PostsPage = (): JSX.Element => {
 
   return (
     <Main title="Articles">
-      {
-        userQuery.data?.isAuthorized &&
+      {userQuery.data?.isAuthorized && (
         <div className={styles.controls}>
-          <Link className={styles.button} to="/editor/new">Create new post</Link>
+          <Link className={styles.button} to="/editor/new">
+            Create new post
+          </Link>
         </div>
-      }
-      <PostsList posts={postsQuery.data!} />
+      )}
+      <PostsList posts={postsQuery.data || []} />
     </Main>
   );
 };

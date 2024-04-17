@@ -1,14 +1,14 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Main } from '../../layouts';
-import { PostEditor } from '../../components';
+import { Main } from "../../layouts";
+import { PostEditor } from "../../components";
 
-import { usePostCreate } from '../../hooks/usePosts';
+import { usePostCreate } from "../../hooks/usePosts";
 
-import { IPostCreate } from '../../interfaces/posts';
+import { IPostCreate } from "../../interfaces/posts";
 
-import styles from './styles.module.scss';
+import styles from "./styles.module.scss";
 
 export const PostCreatePage = (): JSX.Element => {
   const [error, setError] = useState<string | null>(null);
@@ -16,15 +16,18 @@ export const PostCreatePage = (): JSX.Element => {
   const postCreateMutation = usePostCreate();
   const navigate = useNavigate();
 
-  const onSubmit = useCallback(async (data: IPostCreate) => {
-    const result = await postCreateMutation.mutateAsync(data);
+  const onSubmit = useCallback(
+    async (data: IPostCreate) => {
+      const result = await postCreateMutation.mutateAsync(data);
 
-    if ('error' in result) {
-      setError(result.message)
-    } else {
-      navigate(`/posts/${data.alias}`)
-    }
-  }, [postCreateMutation, navigate, setError]);
+      if ("error" in result) {
+        setError(result.message);
+      } else {
+        navigate(`/posts/${data.alias.toLowerCase()}`);
+      }
+    },
+    [postCreateMutation, navigate, setError],
+  );
 
   return (
     <Main title="Create new post">
