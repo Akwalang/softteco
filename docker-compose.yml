@@ -12,8 +12,6 @@ services:
       POSTGRES_PASSWORD: postgres
     volumes:
       - softteco_app_postgres:/var/lib/postgresql/data
-    networks:
-      - default
   pgadmin:
     image: dpage/pgadmin4
     container_name: softteco_app_pgadmin
@@ -25,8 +23,6 @@ services:
       PGADMIN_DEFAULT_PASSWORD: root
     volumes:
       - softteco_app_pgadmin:/var/lib/pgadmin
-    networks:
-      - default
   migration:
     build:
         context: ./server
@@ -41,8 +37,6 @@ services:
       DATABASE_NAME: blog
     depends_on:
       - db
-    networks:
-      - default
   server:
     build: ./server
     container_name: softteco_app_server
@@ -51,7 +45,7 @@ services:
       - "3001:3001"
     environment:
       NODE_ENV: development
-      HTTP_HOST: localhost
+      HTTP_HOST: 0.0.0.0
       HTTP_PORT: 3001
       DATABASE_HOST: db
       DATABASE_PORT: 5432
@@ -63,24 +57,16 @@ services:
       JWT_EXPIRES_IN: 2d
     depends_on:
       - migration
-    networks:
-      - default
   client:
     build: ./client
     container_name: softteco_app_client
     restart: always
     ports:
-      - "3000:4173"
+      - "3000:3000"
     environment:
-      VITE_API_URL: http://server:3001
+      VITE_API_URL: http://localhost:3001
     depends_on:
       - server
-    networks:
-      - default
-
-networks:
-  default:
-    driver: bridge
 
 volumes:
   softteco_app_postgres:
